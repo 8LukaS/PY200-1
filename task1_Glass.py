@@ -2,13 +2,37 @@
 # -*- coding: utf-8 -*-
 # Курс DEV-PY200. Объектно-ориентированное программирование на языке Python
 # Тема 1.1 Основы ООП. Понятие класса, объекта. Создание экземпляра класса
-
 # Лабораторная работа № 1.1 (4 ак.ч.)
-
 # Слушатель (ФИО): Лука С.С. 2 группа
 # 1. Создайте класс Glass с атрибутами capacity_volume и occupied_volume
 #    Обязательно проверяйте типы (TypeError) и значения переменных (ValueError)
 class Glass:
+    """ A Glass is a model of a real glass
+        Attributes:
+        capacity_volume - maximum glass volume
+        occupied_volume - current glass volume
+    Methods:
+    __str__
+
+    """
+    def __init__(self, capacity_volume = 500, occupied_volume = 0):
+        """This is the initialization method. It implements verification of input data:positive or negative"""
+        if not isinstance(capacity_volume, (int, float)) or not \
+                isinstance(occupied_volume, (int, float)):
+            raise TypeError('Variable not digit 1')
+
+        if capacity_volume < 0 or occupied_volume < 0:
+            raise ValueError('Volume less zerro')
+
+        self.capacity_volume = capacity_volume
+        self.occupied_volume = occupied_volume
+
+    def __str__(self):
+        return f'Glass({self.capacity_volume},{self.occupied_volume})'
+
+
+glass_1 = Glass()
+print(glass_1)
     """Class Glass"""
     def __init__(self, capacity_volume, occupied_volume):
         """This bloc initialize variable for instance"""
@@ -95,13 +119,12 @@ class GlassDefaultListArg():
         self.occupied_volume = occupied_volume
         self.occupied_volume.append(2)
 
-
 print(' ----------------Задание № 4-------------------')
-glass1_4_1 = GlassDefaultListArg(2, 0)
+glass1_4_1 = GlassDefaultListArg(2,300)
 print(glass1_4_1.occupied_volume)
-glass1_4_2 = GlassDefaultListArg(0, 0)
+glass1_4_2 = GlassDefaultListArg(500,0)
 print(glass1_4_2.occupied_volume)
-glass1_4_3 = GlassDefaultListArg(0, 0)
+glass1_4_3 = GlassDefaultListArg(0,0)
 print(glass1_4_3.occupied_volume)
 
 
@@ -110,7 +133,14 @@ print(glass1_4_3.occupied_volume)
 # #    Вызовите методы add_water и remove.
 # #    Убедитесь, что методы правильно изменяют атрибут occupied_volume.
 class GlassAddRemove():
-    '''Class GlassAddRemove'''
+    '''A GlassAddRemove is a model of a real glass
+        Attributes:
+        capacity_volume - maximum glass volume
+        occupied_volume - current glass volume
+    Methods:
+        add_water
+        remove_water
+    '''
 
     def __init__(self, capacity_volume: int, occupied_volume: int) -> int:
         """This bloc initialize variable for instance"""
@@ -124,22 +154,23 @@ class GlassAddRemove():
 
     def add_water(self, adding_water):
         space = self.capacity_volume - self.occupied_volume  # пустое место в стакане
+
         if adding_water <= space:
             self.occupied_volume += adding_water
-
+            print("новый объем",self.occupied_volume)
         else:
-            # space < self.adding_water
-            return adding_water - space
+            raise Exception('Обьем воды превышает пустой объем в стакане')
 
-
-#
-#     def remove_water(self,removing_water:int)->int: #удаляем воду
-#         if occupied_volume > capacity_volume:
-#             return Exception
-#         else:
-# print(' ----------------Задание №5-------------------')
-glass_5_1 = GlassAddRemove(300, 150)
+    def remove_water(self,removing_water): #удаляем воду
+        if removing_water <= self.occupied_volume:
+            self.occupied_volume -= removing_water
+            print('Остаточный объем',self.occupied_volume)
+        else:
+            raise ('Удаляемый обьем превышает обьем воды в стакане')
+print(' ----------------Задание №5-------------------')
+glass_5_1 = GlassAddRemove(300, 200)
 print(glass_5_1.add_water(100))
+print(glass_5_1.remove_water(200))
 #
 # # 6. Создайте три объекта типа GlassAddRemove,
 # #    вызовите функцию dir для трёх объектов и для класса GlassAddRemove.
@@ -162,7 +193,13 @@ print(' ----------------Задание №7-------------------')
 # #    а также после создания объекта.
 # #    Опишите результат.
 class GlassDefaultListArgNew():
-    '''GlassDefaultListArg'''
+    '''A GlassDefaultListArg is a model of a real glass
+        Attributes:
+        capacity_volume - maximum glass volume
+        occupied_volume - current glass volume
+    Methods:
+    __init__
+    '''
 
     def __init__(self, capacity_volume, occupied_volume):
         """This bloc initialize variable for instance"""
@@ -184,7 +221,13 @@ print(' ----------------Задание №8-------------------')
 
 
 class GlassId():
-    '''Class Glass'''
+    '''GlassId is a model of a real glass
+        Attributes:
+        capacity_volume - maximum glass volume
+        occupied_volume - current glass volume
+    Methods:
+    __init__
+    '''
 
     def __init__(self, capacity_volume, occupied_volume):
         """This bloc initialize variable for instance"""
@@ -196,33 +239,48 @@ glass_8_1 = GlassId(200, 100)
 print(hex(id(glass_8_1)))
 glass_8_2 = GlassId(200, 100)
 print(hex(id(glass_8_2)))
-print(' ----------------Задание №9-------------------')
+print(GlassId_body)
 
-
+print(' --Задание №9- ')
 # # 9. Корректно ли следующее объявление класса с точки зрения:
 # #     - интерпретатора Python;
 # #     - соглашения о стиле кодирования
 # #    Запустите код.
 # class D:
-#     def __init__(f, a=2): #нужно использовать self
-#         f.a = a
-#     def print_me(f):
-#         print(f.a)
+#     def __init__(self, a=2): #нужно использовать self
+#         self.a = a
+#     def print_me(self):
+#         print(self.a)
 # class_d = D()
-# print(' ----------------Задание №10-------------------')
-# # # 10. Исправьте
-# class A:
-#     def __init__(self, a):
-#         if 10 < a < 50:
-#             self.a = a
-# # # Объясните так реализовывать __init__ нельзя?
-#
-# print(' ----------------Задание №10-------------------')
+
+ # 10. Исправьте
+class A:
+    def __init__(self, a):
+        if 10 < a < 50:
+            self.a = a
+# # Объясните так реализовывать __init__ нельзя?
+print(' Задание №10:нельзя не испольвать self, нельзя не передать аргументы и переапредилить с помошью self')
+
+print(' ----------------Задание №11-------------------')
 # # # 11. Циклическая зависимость (стр. 39-44
 class Node:
+    '''Node is a model of a node
+        Attributes:
+        __prev - link previos node
+        __next - link next node
+    Methods:
+    __init__
+    set_next
+    set_prev
+    get_next
+    get_prev
+    get_value
+    __str__
+    __repr__
+    '''
     def __init__(self, prev=None, next_=None):
-        self.__prev = prev  # Class Node __скрытый параметр
-        self.__next = next_  # Class Node
+        self.__prev = prev  # cсылка на предыдущий Node
+        self.__next = next_  # cсылка на следующий Node
 
     def set_next(self, next_):
         self.__next = next_
@@ -240,13 +298,25 @@ class Node:
         pass
 
     def __str__(self):
-        ...
+        return f'Node({self.__prev},{self.__next})'
 
     def __repr__(self):
-        ...
-
+        return f'Node({self.__prev},{self.__next})'
 
 class LinkedList:  # связанный список
+    """ A LinkedList
+        Attributes:
+        head - maximum glass volume
+        tail - current glass volume
+    Methods:
+        linked_nodes
+        insert
+        append
+        clear
+        find
+        remove
+        delete
+    """
     def __init__(self, node=None):
         if nodes is None:
             self.head = Node
@@ -270,17 +340,17 @@ class LinkedList:  # связанный список
             nodes[-1].setr_next((nodes[i + 1])
 
 
-def insert(self, node, index=0):
-    '''
-    Insert Node to any place of LinkedList -----вставить узел
-    node - Node
-    index - position of node
-    '''
+    def insert(self, node, index=0):
+        '''
+        Insert Node to any place of LinkedList -----вставить узел
+        node - Node
+        index - position of node
+        '''
 
-    # current_node = self.head
-    # for i in range(index):
-    #     current_node = current_node.get_next()
-    # current_node.set_prev(node)
+        current_node = self.head
+        for i in range(index):
+            current_node = current_node.get_next()
+        current_node.set_prev(node)
 
     def append(self, node):
         '''
@@ -296,11 +366,14 @@ def insert(self, node, index=0):
         '''
         Clear LinkedList
         '''
-        ...
+    del node[:]
+
 
     def find(self, node):  # возврошаем индекс
+        return LinkedList.index(node)
 
     def remove(self, node):  # удаление по значению
         ...
 
     def delete(self, index):  # удаление по индексу
+        del LinkedList.node[index]

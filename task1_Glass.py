@@ -318,16 +318,16 @@ class LinkedList:  # связанный список
         delete
     """
     def __init__(self, node=None):
-        if nodes is None:
-            self.head = Node
-            self.tail = Node
-            self.__len = 0
-        elif isinstance(nodes, list):
-            self.head = nodes[0]
-            self.tail = nodes[-1]
-            self.linked_nodes(nodes)  # связываем пользовательский набор узлов
+        if node is None:
+            self.head = Node #ccылка на голову
+            self.tail = Node #ссылка на хвост
+            self.__len = 0 #длина списка
+        elif isinstance(node, list): #проверка класса является ли списком
+            self.head = node[0] #если ссылка на голову
+            self.tail = node[-1] #если ссылка хвост
+            self.linked_nodes(node)  # связываем пользовательский набор узлов
 
-    def linked_nodes(self, nodes):  # нужно еще проверить если 1 значение
+    def linked_nodes(self, nodes):  # нужно еще проверить есть-ли 1 значение
         # Установить ссылки для первого
         nodes[0].set_prev(nodes[-1])
         nodes[0].set_next(nodes[-1])
@@ -366,6 +366,7 @@ class LinkedList:  # связанный список
         '''
         Clear LinkedList
         '''
+
     del node[:]
 
 
@@ -373,7 +374,22 @@ class LinkedList:  # связанный список
         return LinkedList.index(node)
 
     def remove(self, node):  # удаление по значению
-        ...
+            self.node = head
+
+            # if head is not None:
+            #     if head.node == node:
+            #         self.head = headcat.nextcat
+            #         headcat = None
+            #         return
+            # while headcat is not None:
+            #     if headcat.cat == rmcat:
+            #         break
+            #     lastcat = headcat
+            #     headcat = headcat.nextcat
+            # if headcat == None:
+            #     return
+            # lastcat.nextcat = headcat.nextcat
+            # headcat = None
 
     def delete(self, index):  # удаление по индексу
         del LinkedList.node[index]

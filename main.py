@@ -9,7 +9,7 @@ if __name__== '__main__':
     driver = driver_bilder.build()
     ll = LinkedList()
     ll.set_stucture_driver(driver)
-    ll.insert_node(20,gkj)
+    ll.insert_node(20,'gh')
     ll.save()
 
 

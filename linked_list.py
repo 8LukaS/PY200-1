@@ -64,6 +64,16 @@ class LinkedList:
                 current_node = current_node.next_node
 
             self.insert_next_node(current_node, data)
+    # def append(self,data):
+    #     new_node = data
+    #     if self.size == 0:
+    #         self.head = new_node
+    #         self.tail = new_node
+    #         self.size += 1
+    #     else:
+    #         self.tail.next_node =new_node
+    #         new_node.prev_node = new_node
+    #         self.size += 1
 
     def to_dict(self):
         d = {} #создаем словарь куда будем складывать ноды
@@ -95,9 +105,8 @@ if __name__ == "__main__":
     ll = LinkedList()
     ll.insert_node(0, 'Привет')
     ll.insert_node(1, 'Python')
-
     # current_node = ll.head.next_node
-    # print(current_node)
+    print(ll.to_dict())
     # i = 0
     # while i < ll.size:
     #     print(current_node)

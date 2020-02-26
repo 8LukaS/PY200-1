@@ -242,16 +242,16 @@ print(hex(id(glass_8_2)))
 print(GlassId_body)
 
 print(' --Задание №9- ')
-# # 9. Корректно ли следующее объявление класса с точки зрения:
-# #     - интерпретатора Python;
-# #     - соглашения о стиле кодирования
-# #    Запустите код.
-# class D:
-#     def __init__(self, a=2): #нужно использовать self
-#         self.a = a
-#     def print_me(self):
-#         print(self.a)
-# class_d = D()
+# 9. Корректно ли следующее объявление класса с точки зрения:
+#     - интерпретатора Python;
+#     - соглашения о стиле кодирования
+#    Запустите код.
+class D:
+    def __init__(self, a=2): #нужно использовать self
+        self.a = a
+    def print_me(self):
+        print(self.a)
+class_d = D()
 
  # 10. Исправьте
 class A:
@@ -259,7 +259,7 @@ class A:
         if 10 < a < 50:
             self.a = a
 # # Объясните так реализовывать __init__ нельзя?
-print(' Задание №10:нельзя не испольвать self, нельзя не передать аргументы и переапредилить с помошью self')
+print(' Задание №10:первый аргумент должен быть self, нельзя не передать аргументы и переапредилить с помошью self')
 
 print(' ----------------Задание №11-------------------')
 # # # 11. Циклическая зависимость (стр. 39-44
@@ -319,8 +319,8 @@ class LinkedList:  # связанный список
     """
     def __init__(self, node=None):
         if node is None:
-            self.head = Node #ccылка на голову
-            self.tail = Node #ссылка на хвост
+            self.head = None #ccылка на голову
+            self.tail = None #ссылка на хвост
             self.__len = 0 #длина списка
         elif isinstance(node, list): #проверка класса является ли списком
             self.head = node[0] #если ссылка на голову
@@ -357,39 +357,116 @@ class LinkedList:  # связанный список
         Append Node to tail of LinkedList
         node - Node
         '''
+        new_node = node(data=data)
+
         self.tail.set_next(node)
         node.set_prev(self.tail)
         self.tail.set_next(self.head)
         self.head.set_prev(self.tail)
-
+        self.__len += 1
     def clear(self):
         '''
-        Clear LinkedList
+        Clear LinkedLis
         '''
-
-    del node[:]
-
+        self.__init__()#переинициализация
 
     def find(self, node):  # возврошаем индекс
-        return LinkedList.index(node)
+        """
+        Поиск по значению в списке,
+        если значение есть, то выводится его индекс (индексация с нуля),
+        если значение повторяется, выводятся все индексы
+        :param node: int, str
+        :return: str, list
+        """
+        if not isinstance(node, (int, str)):
+            raise TypeError
+
+        print(f"Провожу поиск узла {node} в списке")
+        current_node = self.head
+        spisok_index = []
+        index = 0
+        while index < self.__len:
+            if current_node.data == node:
+                spisok_index.append(index)
+            index += 1
+            current_node = current_node.sled
+
+        if len(spisok_index) == 0:
+            return "Такого узла в списке нет!"
+        elif len(spisok_index) == 1:
+            return spisok_index[0]
+        else:
+            return spisok_index
 
     def remove(self, node):  # удаление по значению
-            self.node = head
+        """
+        Удаление узла по значению,
+        если значение есть в списке, то оно будет удалено,
+        если значение повторяется несколько раз, то и удалится оно несколько раз.
+        :param node: int, str
+        """
+        print(f"Удаление узла со значением {node} из списка")
+        index = self.search_node(node)
+        if isinstance(index, list):
+            self.remove_node(index[0])
+            for i in range(1, len(index)):
+                poz = index[i] - 1
+                self.remove_node(poz)
+        elif isinstance(index, str):
+            print(index)
+        else:
+            self.remove_node(index)
 
-            # if head is not None:
-            #     if head.node == node:
-            #         self.head = headcat.nextcat
-            #         headcat = None
-            #         return
-            # while headcat is not None:
-            #     if headcat.cat == rmcat:
-            #         break
-            #     lastcat = headcat
-            #     headcat = headcat.nextcat
-            # if headcat == None:
-            #     return
-            # lastcat.nextcat = headcat.nextcat
-            # headcat = None
+
 
     def delete(self, index):  # удаление по индексу
-        del LinkedList.node[index]
+        """
+        Удаление узла по индексу
+        :param indx: int
+        """
+        if not isinstance(index, int):
+            raise TypeError
+
+        print(f"Удаляю элемент с индексом {index} из списка")
+        if index == 0:
+            if self.__len > 1:
+                current_node = self.head
+                self.head = current_node.sled
+                current_node.sled = None
+                current_node.pred = None
+                self.head.pred = weakref.ref(self.tail)
+                self.tail.sled = self.head
+            else:
+                self.clear()
+
+        elif index == self.__len - 1:
+            current_node = self.tail
+            self.tail = current_node.pred()
+            current_node.pred = None
+            current_node.sled = None
+            self.tail.sled = self.head
+            self.head.pred = weakref.ref(self.tail)
+
+        elif 1 <= index <= self.__len - 1:
+            current_node = self.head.sled
+            pred_node = self.head
+            sled_node = current_node.sled
+            sch = 1
+            while sch < self.__len - 1:
+                if sch == index:
+                    pred_node.sled = sled_node
+                    sled_node.pred = weakref.ref(pred_node)
+                    current_node.pred = None
+                    current_node.sled = None
+                    current_node = sled_node
+                else:
+                    current_node = current_node.sled
+                    pred_node = pred_node.sled
+                    sled_node = sled_node.sled
+                sch += 1
+        else:
+            print("Нет такого индекса")
+            self.__len += 1
+        self.__len -= 1
+
+if __name__ == "__main__":

@@ -33,6 +33,10 @@ class PickleBuilder(SDBuilder):
         filename = input('Enter filename (.bin)>')
         return PickleDriver(filename)
 
+class YAML(SDBuilder):
+    def build(self):
+        filename = input('Enter filename (.yml)>')
+        return YAMLDriver(filename)
 
 class SDFabric:
     @staticmethod

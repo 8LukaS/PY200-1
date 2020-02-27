@@ -8,6 +8,8 @@ import os
 
 import json
 import pickle
+import yaml
+from pprint import pprint
 
 class IStructureDriver:
     def read(self):
@@ -59,17 +61,17 @@ class PickleDriver(IStructureDriver):
         with open(self.__filename, 'wb') as f:
             pickle.dump(d, f)
 
-class YAML(IStructureDriver):
+class YAMLDriver(IStructureDriver):
     def __init__(self, filename):
         self.__filename = filename
 
-    def read(self):
+    def read(self): #чтение из YAML
         with open(self.__filename, 'rb') as f:
-            return pickle.load(f)
+            yaml.safe_load(f)
 
-    def write(self, d):
+    def write(self, d): #запись объектов Python в YAML
         with open(self.__filename, 'wb') as f:
-            pickle.dump(d, f)
+            yaml.dump(d, f)
 
 
 if __name__ == '__main__':

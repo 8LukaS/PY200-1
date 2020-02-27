@@ -59,6 +59,18 @@ class PickleDriver(IStructureDriver):
         with open(self.__filename, 'wb') as f:
             pickle.dump(d, f)
 
+class YAML(IStructureDriver):
+    def __init__(self, filename):
+        self.__filename = filename
+
+    def read(self):
+        with open(self.__filename, 'rb') as f:
+            return pickle.load(f)
+
+    def write(self, d):
+        with open(self.__filename, 'wb') as f:
+            pickle.dump(d, f)
+
 
 if __name__ == '__main__':
 

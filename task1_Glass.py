@@ -263,6 +263,8 @@ print(' Задание №10:первый аргумент должен быть
 
 print(' ----------------Задание №11-------------------')
 # # # 11. Циклическая зависимость (стр. 39-44
+#---------------------------------------------------------------------------------------------
+import weakref
 class Node:
     '''Node is a model of a node
         Attributes:
@@ -279,7 +281,7 @@ class Node:
     __repr__
     '''
     def __init__(self, prev=None, next_=None):
-        self.__prev = prev  # cсылка на предыдущий Node
+        self.__prev = weakref.ref(prev) if prev is not None else None  # cсылка на предыдущий Node
         self.__next = next_  # cсылка на следующий Node
 
     def set_next(self, next_):
@@ -303,7 +305,7 @@ class Node:
     def __repr__(self):
         return f'Node({self.__prev},{self.__next})'
 
-class LinkedList:  # связанный список
+class LinkedList(Node):  # связанный список
     """ A LinkedList
         Attributes:
         head - maximum glass volume
@@ -318,6 +320,8 @@ class LinkedList:  # связанный список
         delete
     """
     def __init__(self, node=None):
+        super().__init__(prev=None, next_=None)  #Функция super() возвращает ссылку на экземпляр класса родителя
+        # Одиночное наследование, вызов инициализатора родительского класса с передачей аргументов
         if node is None:
             self.head = None #ccылка на голову
             self.tail = None #ссылка на хвост
@@ -357,7 +361,7 @@ class LinkedList:  # связанный список
         Append Node to tail of LinkedList
         node - Node
         '''
-        new_node = node(data=data)
+        self.new_node = node(data=data)
 
         self.tail.set_next(node)
         node.set_prev(self.tail)
@@ -380,32 +384,29 @@ class LinkedList:  # связанный список
         """
         if not isinstance(node, (int, str)):
             raise TypeError
-
-        print(f"Провожу поиск узла {node} в списке")
         current_node = self.head
-        spisok_index = []
+        list_index = []
         index = 0
         while index < self.__len:
             if current_node.data == node:
-                spisok_index.append(index)
+                list_index.append(index)
             index += 1
             current_node = current_node.sled
 
-        if len(spisok_index) == 0:
+        if len(list_index) == 0:
             return "Такого узла в списке нет!"
-        elif len(spisok_index) == 1:
-            return spisok_index[0]
+        elif len(list_index) == 1:
+            return list_index[0]
         else:
-            return spisok_index
+            return list_index
 
     def remove(self, node):  # удаление по значению
         """
         Удаление узла по значению,
-        если значение есть в списке, то оно будет удалено,
-        если значение повторяется несколько раз, то и удалится оно несколько раз.
+        если значение есть в списке, то оно удаляется,
+        если значение повторяется несколько раз, токже удаляется.
         :param node: int, str
         """
-        print(f"Удаление узла со значением {node} из списка")
         index = self.search_node(node)
         if isinstance(index, list):
             self.remove_node(index[0])
@@ -427,7 +428,6 @@ class LinkedList:  # связанный список
         if not isinstance(index, int):
             raise TypeError
 
-        print(f"Удаляю элемент с индексом {index} из списка")
         if index == 0:
             if self.__len > 1:
                 current_node = self.head
@@ -441,28 +441,28 @@ class LinkedList:  # связанный список
 
         elif index == self.__len - 1:
             current_node = self.tail
-            self.tail = current_node.pred()
-            current_node.pred = None
-            current_node.sled = None
-            self.tail.sled = self.head
-            self.head.pred = weakref.ref(self.tail)
+            self.tail = current_node.prev()
+            current_node.prev = None
+            current_node.next = None
+            self.tail.next = self.head
+            self.head.prev = weakref.ref(self.tail)
 
         elif 1 <= index <= self.__len - 1:
-            current_node = self.head.sled
-            pred_node = self.head
-            sled_node = current_node.sled
+            current_node = self.head.next
+            prev_node = self.head
+            next_node = current_node.next
             sch = 1
             while sch < self.__len - 1:
                 if sch == index:
-                    pred_node.sled = sled_node
-                    sled_node.pred = weakref.ref(pred_node)
-                    current_node.pred = None
-                    current_node.sled = None
-                    current_node = sled_node
+                    prev_node.next = next_node
+                    next_node.prev = weakref.ref(prev_node)
+                    current_node.prev = None
+                    current_node.next = None
+                    current_node = next_node
                 else:
-                    current_node = current_node.sled
-                    pred_node = pred_node.sled
-                    sled_node = sled_node.sled
+                    current_node = current_node.next
+                    prev_node = prev_node.next
+                    next_node =next_node.next
                 sch += 1
         else:
             print("Нет такого индекса")
@@ -470,3 +470,6 @@ class LinkedList:  # связанный список
         self.__len -= 1
 
 if __name__ == "__main__":
+    my_list = LinkedList()
+    my_list.insert("hello")
+    my_list.insert("world")

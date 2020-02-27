@@ -98,23 +98,23 @@ class Date:
     @staticmethod
     def date2_date1(date2, date1):
         return date2 - date1
-    #
-    # # перезагрузка метода
-    # # def date_to_int(data):
-    # @year.setter
-    # def year(self, value):
-    #     self._year = value
-    #
-    # @month.setter
-    # def month(self, value):
-    #     self._month = value
-    #
-    # @day.setter
-    # def day(self, value):
-    #     self._day = value
-    # @day.setter
-    # def day(self, value):
-    #     self._day = value
+
+    # перезагрузка метода
+    # def date_to_int(data):
+    @year.setter
+    def year(self, value):
+        self._year = value
+
+    @month.setter
+    def month(self, value):
+        self._month = value
+
+    @day.setter
+    def day(self, value):
+        self._day = value
+    @day.setter
+    def day(self, value):
+        self._day = value
 
 
 if __name__ == "__main__":

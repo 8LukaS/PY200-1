@@ -43,7 +43,8 @@ class SDFabric:
     def get_sd_driver(driver_name):
         builders = {'json': JSONFileBuilder,
                     'json_str': JSONStrBuilder,
-                    'pickle': PickleBuilder}
+                    'pickle': PickleBuilder,
+                    'yaml': YAML}
         return builders[driver_name]()
 
 if __name__ =='__main__':
